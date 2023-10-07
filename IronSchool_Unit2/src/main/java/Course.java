@@ -1,3 +1,5 @@
+import java.util.UUID;
+
 public class Course {
     private String courseId;
     private String name;
@@ -46,9 +48,14 @@ public class Course {
     }
 
     public Course(String name, double price) {
+        this.courseId = generateCourseId();
         this.name = name;
         this.price = price;
 
+    }
+
+    private String generateCourseId() {
+        return UUID.randomUUID().toString();
     }
 
     @Override
