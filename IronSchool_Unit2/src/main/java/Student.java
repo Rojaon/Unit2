@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class Student {
@@ -5,7 +6,7 @@ public class Student {
     private String name;
     private String address;
     private String email;
-    private Course course;
+    private ArrayList<Course> course;
 
 
     public Student(String name, String address, String email) {
@@ -13,6 +14,7 @@ public class Student {
         this.name = name;
         this.address = address;
         this.email = email;
+        this.course = new ArrayList<>();
     }
 
     private String generateId() {
@@ -51,12 +53,12 @@ public class Student {
         this.email = email;
     }
 
-    public Course getCourse() {
-        return course;
-    }
-
+//    public Course getCourse() {
+//        return course;
+//    }
+//
     public void setCourse(Course course) {
-        this.course = course;
+        this.course.add(course);
     }
 
     @Override

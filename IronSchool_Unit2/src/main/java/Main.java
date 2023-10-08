@@ -1,4 +1,5 @@
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,9 +13,11 @@ public class Main {
 
     public static void main(String[] args) {
 
+//
                 getInputData("Enter School name: \n", "Enter number of teacher: \n",
                 "Enter number of courses: \n","Enter number of Students: \n");
-
+        SwingUtilities.invokeLater(CommandMenu::new);
+//        calculateProfit();
         teachers.forEach((key, value) -> {
             System.out.println("teachers\nKey: " + key + ", Value: " + value);
         });
@@ -26,7 +29,6 @@ public class Main {
         });
 
     }
-
 
 
     private static void getInputData(String... questions) {
@@ -93,6 +95,5 @@ public class Main {
         }
 
     }
-
 
 }
