@@ -73,6 +73,9 @@ public class CommandMenu {
                     case "LOOKUP TEACHER":
                         lookupTeacher();
                         break;
+                    case "SHOW PROFIT":
+                    showProfit();
+                    break;
 
                 }
             }
@@ -82,6 +85,8 @@ public class CommandMenu {
     //      ================================================= REFACTOR CODE   =================================================
 
     private void enrollStudent() {
+
+        System.out.println(Main.students);
         frame.setVisible(false);
 
         JLabel stLabel = new JLabel("Enter Student id: ");
@@ -107,6 +112,7 @@ public class CommandMenu {
                 } else {
 
                     s.setCourse(c);
+                    c.setMoney_earned(c.getMoney_earned() + c.getPrice());
                     JOptionPane.showMessageDialog(null, "Student enrolled!", "Success", JOptionPane.INFORMATION_MESSAGE);
                     frame.setVisible(true);
                     frame2.setVisible(false);
@@ -468,5 +474,39 @@ public class CommandMenu {
         frame2.setVisible(true);
 
     }
+
+    private void showProfit() {
+        // The logic to handle "LOOKUP TEACHER"
+        Main.profit();
+        double profit = Main.profit;
+
+        frame.setVisible(false);
+
+        JLabel profitLabel = new JLabel("Profit: ");
+
+        JLabel showProfitLabel = new JLabel(String.valueOf(profit));
+
+        goBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame2.dispose();
+                frame.setVisible(true);
+                frame2.remove(profitLabel);
+                frame2.remove(showProfitLabel);
+                frame2.remove(goBackButton);
+            }
+        });
+
+
+
+        frame2.add(profitLabel);
+        frame2.add(showProfitLabel);
+        frame2.add(goBackButton);
+
+        frame2.setVisible(true);
+
+    }
+
+
 
 }

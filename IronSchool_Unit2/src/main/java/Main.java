@@ -11,6 +11,7 @@ public class Main {
     public static HashMap<String,Course> courses =new HashMap<>();
     public static HashMap<String,Student> students =new HashMap<>();
 
+    public static double profit;
     public static void main(String[] args) {
 
 //
@@ -96,4 +97,26 @@ public class Main {
 
     }
 
+
+    public static void profit(){
+        // Show Profit
+        double totalMoneyEarned = 0.0;
+        double totalTeacherSalaries = 0.0;
+
+
+
+        for (Course course : courses.values()) {
+            totalMoneyEarned += course.getMoney_earned();
+        }
+
+        for (Teacher teacher : teachers.values()) {
+            totalTeacherSalaries += teacher.getSalary();
+        }
+
+
+
+        System.out.println("totalMoneyEarned:"+totalMoneyEarned+"|| totalTeacherSalaries: "+totalTeacherSalaries);
+         profit = totalMoneyEarned - totalTeacherSalaries;
+        System.out.println("Total Profit: $" + profit);
+    }
 }

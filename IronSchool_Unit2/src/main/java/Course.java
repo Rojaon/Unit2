@@ -51,7 +51,7 @@ public class Course {
         this.courseId = generateCourseId();
         this.name = name;
         this.price = price;
-
+        this.money_earned =0;
     }
 
     private String generateCourseId() {
