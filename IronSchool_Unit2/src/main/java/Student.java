@@ -53,10 +53,10 @@ public class Student {
         this.email = email;
     }
 
-//    public Course getCourse() {
-//        return course;
-//    }
-//
+    public ArrayList<Course> getCourse() {
+        return course;
+    }
+
     public void setCourse(Course course) {
         this.course.add(course);
     }

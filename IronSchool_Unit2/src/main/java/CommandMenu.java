@@ -134,8 +134,12 @@ public class CommandMenu {
                     JOptionPane.showMessageDialog(null, "An error occurred!", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
 
-                    s.setCourse(c);
-                    c.setMoney_earned(c.getMoney_earned() + c.getPrice());
+//                    if student is already enrolled don't add course and don't update earned money
+                    if(!s.getCourse().contains(c)) {
+                        s.setCourse(c);
+                        c.setMoney_earned(c.getMoney_earned() + c.getPrice());
+                    }
+
                     JOptionPane.showMessageDialog(null, "Student enrolled!", "Success", JOptionPane.INFORMATION_MESSAGE);
                     frame.setVisible(true);
                     frame2.setVisible(false);
