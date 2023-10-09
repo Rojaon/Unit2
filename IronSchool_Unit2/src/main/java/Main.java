@@ -7,11 +7,15 @@ import java.util.Scanner;
 
 public class Main {
 
+    public static String schoolName;
     public static HashMap<String,Teacher> teachers =new HashMap<>();
     public static HashMap<String,Course> courses =new HashMap<>();
     public static HashMap<String,Student> students =new HashMap<>();
 
     public static double profit;
+    public static double totalMoneyEarned;
+    public static double totalTeacherSalaries;
+
     public static void main(String[] args) {
 
 //
@@ -44,8 +48,8 @@ public class Main {
             System.out.println("done with: "+switcher);
             switcher++;}
         }
+        schoolName = inputData.get(0);
 
-//        return inputData;
     }
 
     private static void creatObjects(int number, int switcher){
@@ -97,14 +101,11 @@ public class Main {
 
     }
 
-
     public static void profit(){
         // Show Profit
-        double totalMoneyEarned = 0.0;
-        double totalTeacherSalaries = 0.0;
 
-
-
+        totalMoneyEarned = 0.0;
+       totalTeacherSalaries = 0.0;
         for (Course course : courses.values()) {
             totalMoneyEarned += course.getMoney_earned();
         }
@@ -112,7 +113,6 @@ public class Main {
         for (Teacher teacher : teachers.values()) {
             totalTeacherSalaries += teacher.getSalary();
         }
-
 
 
         System.out.println("totalMoneyEarned:"+totalMoneyEarned+"|| totalTeacherSalaries: "+totalTeacherSalaries);

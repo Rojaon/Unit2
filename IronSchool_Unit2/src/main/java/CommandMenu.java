@@ -10,16 +10,27 @@ public class CommandMenu {
     private JFrame frame2;
     private JList<String> menuList;
     private DefaultListModel<String> listModel;
-    private JButton btn;
+    private JButton selectBtn;
+    private JButton executeBtn;
     private  JButton goBackButton;
     public CommandMenu() {
-        frame = new JFrame("Menu Navigation");
+        frame = new JFrame(Main.schoolName+" Menu Navigation");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300, 400);
+        frame.setSize(450, 400);
+
+        // Get the screen size
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+        // Calculate the frame's position to center it
+        int x = (screenSize.width - frame.getWidth()) / 2;
+        int y = (screenSize.height - frame.getHeight()) / 2;
+
+        // Set the new frame location
+        frame.setLocation(x, y);
 
         listModel = new DefaultListModel<>();
-        listModel.addElement("ENROLL student");
-        listModel.addElement("ASSIGN teacher");
+        listModel.addElement("ENROLL STUDENT TO COURSE");
+        listModel.addElement("ASSIGN TEACHER TO COURSE");
         listModel.addElement("SHOW COURSES");
         listModel.addElement("LOOKUP COURSE");
         listModel.addElement("SHOW STUDENTS");
@@ -27,32 +38,36 @@ public class CommandMenu {
         listModel.addElement("SHOW TEACHERS");
         listModel.addElement("LOOKUP TEACHER");
         listModel.addElement("SHOW PROFIT");
+        listModel.addElement("SHOW MONEY EARNED");
+        listModel.addElement("SHOW MONEY SPENT");
 
         menuList = new JList<>(listModel);
         menuList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         menuList.setSelectedIndex(0);
 
-        btn = new JButton("Select");
+        selectBtn = new JButton("Select");
 
         frame.add(new JScrollPane(menuList));
-        frame.add(btn, BorderLayout.SOUTH);
+        frame.add(selectBtn, BorderLayout.SOUTH);
         frame.setVisible(true);
 
-        frame2 = new JFrame("Frame 2");
+        frame2 = new JFrame(Main.schoolName);
         frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame2.setLocation(x, y);
+
         frame2.setSize(500, 400);
         frame2.setLayout(new FlowLayout());
         goBackButton = new JButton("Go Back");
-        btn.addActionListener(new ActionListener() {
+        selectBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedOption = menuList.getSelectedValue();
 
                 switch (selectedOption) {
-                    case "ENROLL student":
+                    case "ENROLL STUDENT TO COURSE":
                         enrollStudent();
                         break;
-                    case "ASSIGN teacher":
+                    case "ASSIGN TEACHER TO COURSE":
                         assignTeacher();
                         break;
                     case "SHOW COURSES":
@@ -77,6 +92,14 @@ public class CommandMenu {
                     showProfit();
                     break;
 
+                    case "SHOW MONEY EARNED":
+                    showMoneyEarned();
+                    break;
+
+                    case "SHOW MONEY SPENT":
+                    showMoneySpent();
+                    break;
+
                 }
             }
         });
@@ -97,9 +120,9 @@ public class CommandMenu {
         JTextField coIdField = new JTextField(30);
         coIdField.setPreferredSize(new Dimension(150, 25));
 
-        JButton addBtn = new JButton("Enroll student");
+        executeBtn= new JButton("Enroll student");
 
-        addBtn.addActionListener(new ActionListener() {
+        executeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -121,7 +144,7 @@ public class CommandMenu {
 //                    *************************
                     frame2.remove(coLabel);
                     frame2.remove(coIdField);
-                    frame2.remove(addBtn);
+                    frame2.remove(executeBtn);
 
                 }
             }
@@ -132,7 +155,7 @@ public class CommandMenu {
 //                    *************************
         frame2.add(coLabel);
         frame2.add(coIdField);
-        frame2.add(addBtn);
+        frame2.add(executeBtn);
         frame2.setVisible(true);
     }
 
@@ -148,9 +171,9 @@ public class CommandMenu {
         JTextField coIdField = new JTextField(30);
         coIdField.setPreferredSize(new Dimension(150, 25));
 
-        JButton addBtn = new JButton("ASSIGN teacher");
+        executeBtn= new JButton("ASSIGN teacher");
 
-        addBtn.addActionListener(new ActionListener() {
+        executeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -171,7 +194,7 @@ public class CommandMenu {
 //                    *************************
                     frame2.remove(coLabel);
                     frame2.remove(coIdField);
-                    frame2.remove(addBtn);
+                    frame2.remove(executeBtn);
 
                 }
             }
@@ -183,14 +206,11 @@ public class CommandMenu {
 //                    *************************
         frame2.add(coLabel);
         frame2.add(coIdField);
-        frame2.add(addBtn);
+        frame2.add(executeBtn);
         frame2.setVisible(true);
     }
 
     private void showCourses() {
-
-
-
         frame.setVisible(false);
         JTextArea coursesTextArea = new JTextArea(15, 40);
         coursesTextArea.setEditable(false);
@@ -234,9 +254,9 @@ public class CommandMenu {
         JTextField coIdField = new JTextField(30);
         coIdField.setPreferredSize(new Dimension(150, 25));
 
-        JButton addBtn = new JButton("LOOKUP FOR COURSE");
+        executeBtn= new JButton("LOOKUP FOR COURSE");
 
-        addBtn.addActionListener(new ActionListener() {
+        executeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("63***" + Main.students);
@@ -268,23 +288,19 @@ public class CommandMenu {
                     frame2.setVisible(false);
                     frame2.remove(coLabel);
                     frame2.remove(coIdField);
-                    frame2.remove(addBtn);
+                    frame2.remove(executeBtn);
                 }
             }
         });
 
         frame2.add(coLabel);
         frame2.add(coIdField);
-        frame2.add(addBtn);
+        frame2.add(executeBtn);
 
         frame2.setVisible(true);
     }
     private void showStudents() {
         frame.setVisible(false);
-//        frame2 = new JFrame("List of Students");
-//        frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame2.setSize(500, 400);
-//        frame2.setLayout(new BorderLayout()); // Use BorderLayout for better layout management
 
         JTextArea studentsTextArea = new JTextArea(15, 40);
         studentsTextArea.setEditable(false);
@@ -331,9 +347,9 @@ public class CommandMenu {
         JTextField studentIdField = new JTextField(30);
         studentIdField.setPreferredSize(new Dimension(150, 25));
 
-        JButton addBtn = new JButton("LOOKUP FOR STUDENT");
+        executeBtn = new JButton("LOOKUP FOR STUDENT");
 
-        addBtn.addActionListener(new ActionListener() {
+        executeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("63***" + Main.students);
@@ -366,7 +382,7 @@ public class CommandMenu {
                     frame2.setVisible(false);
                     frame2.remove(studentLabel);
                     frame2.remove(studentIdField);
-                    frame2.remove(addBtn);
+                    frame2.remove(executeBtn);
 
                 }
             }
@@ -374,16 +390,12 @@ public class CommandMenu {
 
         frame2.add(studentLabel);
         frame2.add(studentIdField);
-        frame2.add(addBtn);
+        frame2.add(executeBtn);
 //                    System.out.println("id: "+id);
         frame2.setVisible(true);
     }
     private void showTeachers() {
         frame.setVisible(false);
-//        frame2 = new JFrame("List of Teachers");
-//        frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame2.setSize(500, 400);
-//        frame2.setLayout(new BorderLayout()); // Use BorderLayout for better layout management
 
         JTextArea teachersTextArea = new JTextArea(15, 40);
         teachersTextArea.setEditable(false);
@@ -429,9 +441,9 @@ public class CommandMenu {
         teacherIdField.setPreferredSize(new Dimension(150, 25));
 
 
-        JButton addBtn = new JButton("LOOKUP FOR TEACHER");
+        executeBtn= new JButton("LOOKUP FOR TEACHER");
 
-        addBtn.addActionListener(new ActionListener() {
+        executeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("63***" + Main.students);
@@ -460,7 +472,7 @@ public class CommandMenu {
                     frame2.setVisible(false);
                     frame2.remove(teacherLabel);
                     frame2.remove(teacherIdField);
-                    frame2.remove(addBtn);
+                    frame2.remove(executeBtn);
 
                 }
             }
@@ -469,14 +481,14 @@ public class CommandMenu {
 
         frame2.add(teacherLabel);
         frame2.add(teacherIdField);
-        frame2.add(addBtn);
+        frame2.add(executeBtn);
 
         frame2.setVisible(true);
 
     }
 
     private void showProfit() {
-        // The logic to handle "LOOKUP TEACHER"
+
         Main.profit();
         double profit = Main.profit;
 
@@ -506,7 +518,67 @@ public class CommandMenu {
         frame2.setVisible(true);
 
     }
+    private void showMoneyEarned() {
+
+        Main.profit();
+        double totalMoneyEarned = Main.totalMoneyEarned;
+
+        frame.setVisible(false);
+
+        JLabel totalMoneyEarnedLabel = new JLabel("Money Earned: ");
+
+        JLabel showTotalMoneyEarnedLabel = new JLabel(String.valueOf(totalMoneyEarned));
+
+        goBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame2.dispose();
+                frame.setVisible(true);
+                frame2.remove(totalMoneyEarnedLabel);
+                frame2.remove(showTotalMoneyEarnedLabel);
+                frame2.remove(goBackButton);
+            }
+        });
 
 
+
+        frame2.add(totalMoneyEarnedLabel);
+        frame2.add(showTotalMoneyEarnedLabel);
+        frame2.add(goBackButton);
+
+        frame2.setVisible(true);
+
+    }
+    private void showMoneySpent() {
+
+        Main.profit();
+        double totalMoneySpent = Main.totalTeacherSalaries;
+
+        frame.setVisible(false);
+
+        JLabel totalMoneySpentLabel = new JLabel("Money Spent: ");
+
+        JLabel showTotalMoneySpentLabel = new JLabel(String.valueOf(totalMoneySpent));
+
+        goBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame2.dispose();
+                frame.setVisible(true);
+                frame2.remove(totalMoneySpentLabel);
+                frame2.remove(showTotalMoneySpentLabel);
+                frame2.remove(goBackButton);
+            }
+        });
+
+
+
+        frame2.add(totalMoneySpentLabel);
+        frame2.add(showTotalMoneySpentLabel);
+        frame2.add(goBackButton);
+
+        frame2.setVisible(true);
+
+    }
 
 }
