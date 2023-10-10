@@ -1,8 +1,6 @@
 
 import javax.swing.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -18,11 +16,13 @@ public class Main {
 
     public static void main(String[] args) {
 
-//
-                getInputData("Enter School name: \n", "Enter number of teacher: \n",
-                "Enter number of courses: \n","Enter number of Students: \n");
+        InputData("Enter Number of Teacher: \n",
+                "Enter Number of Courses: \n","Enter Number of Students: \n");
+
+//     ========================= Start JFrame   =========================
         SwingUtilities.invokeLater(CommandMenu::new);
-//        calculateProfit();
+
+
         teachers.forEach((key, value) -> {
             System.out.println("teachers\nKey: " + key + ", Value: " + value);
         });
@@ -36,23 +36,31 @@ public class Main {
     }
 
 
-    private static void getInputData(String... questions) {
+    private static void InputData(String... questions) {
         int switcher = 1;
+        int input;
         Scanner scanner = new Scanner(System.in);
-        List<String> inputData = new ArrayList<>();
-        for(String question: questions) {
-            System.out.println(question);
-            inputData.add(scanner.nextLine());
-            if(inputData.size() > 1){
-            creatObjects(Integer.parseInt(inputData.get(switcher)),switcher);
-            System.out.println("done with: "+switcher);
-            switcher++;}
-        }
-        schoolName = inputData.get(0);
+        System.out.println("Enter School name: ");
+        schoolName = scanner.nextLine();
 
+        for(String question: questions) {
+            while (true) {
+                System.out.println(question);
+                if (scanner.hasNextInt()) {
+                    input = scanner.nextInt();
+                        createObjects(input,switcher);
+                        System.out.println("done with: "+switcher);
+                        switcher++;
+                    break;
+                } else {
+                    System.out.println("That's not a valid number. Try again.");
+                    scanner.next(); // Clear the invalid input
+                }
+            }
+        }
     }
 
-    private static void creatObjects(int number, int switcher){
+    private static void createObjects(int number, int switcher){
         Scanner scanner = new Scanner(System.in);
         switch (switcher){
 

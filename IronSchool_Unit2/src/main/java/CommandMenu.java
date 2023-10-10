@@ -6,27 +6,27 @@ import java.util.Map;
 
 public class CommandMenu {
 
-    private JFrame frame;
-    private JFrame frame2;
+    private JFrame menuFrame;
+    private JFrame executionFrame;
     private JList<String> menuList;
     private DefaultListModel<String> listModel;
     private JButton selectBtn;
     private JButton executeBtn;
     private  JButton goBackButton;
     public CommandMenu() {
-        frame = new JFrame(Main.schoolName+" Menu Navigation");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(450, 400);
+        menuFrame = new JFrame(Main.schoolName+" Menu Navigation");
+        menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        menuFrame.setSize(450, 400);
 
         // Get the screen size
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         // Calculate the frame's position to center it
-        int x = (screenSize.width - frame.getWidth()) / 2;
-        int y = (screenSize.height - frame.getHeight()) / 2;
+        int x = (screenSize.width - menuFrame.getWidth()) / 2;
+        int y = (screenSize.height - menuFrame.getHeight()) / 2;
 
         // Set the new frame location
-        frame.setLocation(x, y);
+        menuFrame.setLocation(x, y);
 
         listModel = new DefaultListModel<>();
         listModel.addElement("ENROLL STUDENT TO COURSE");
@@ -47,17 +47,19 @@ public class CommandMenu {
 
         selectBtn = new JButton("Select");
 
-        frame.add(new JScrollPane(menuList));
-        frame.add(selectBtn, BorderLayout.SOUTH);
-        frame.setVisible(true);
+        menuFrame.add(new JScrollPane(menuList));
+        menuFrame.add(selectBtn, BorderLayout.SOUTH);
+        menuFrame.setVisible(true);
 
-        frame2 = new JFrame(Main.schoolName);
-        frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame2.setLocation(x, y);
+        executionFrame = new JFrame(Main.schoolName);
+        executionFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        executionFrame.setLocation(x, y);
 
-        frame2.setSize(500, 400);
-        frame2.setLayout(new FlowLayout());
+        executionFrame.setSize(500, 400);
+        executionFrame.setLayout(new FlowLayout());
         goBackButton = new JButton("Go Back");
+
+
         selectBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -110,17 +112,18 @@ public class CommandMenu {
     private void enrollStudent() {
 
         System.out.println(Main.students);
-        frame.setVisible(false);
+        menuFrame.setVisible(false);
 
-        JLabel stLabel = new JLabel("Enter Student id: ");
+        JLabel stLabel = new JLabel("Enter Student Id: ");
         JTextField stIdField = new JTextField(30);
         stIdField.setPreferredSize(new Dimension(150, 25));
 //                    ************************************************
-        JLabel coLabel = new JLabel("Enter course id: ");
+        JLabel coLabel = new JLabel("Enter Course Id: ");
         JTextField coIdField = new JTextField(30);
         coIdField.setPreferredSize(new Dimension(150, 25));
 
-        executeBtn= new JButton("Enroll student");
+        executeBtn= new JButton("Enroll Student");
+
 
         executeBtn.addActionListener(new ActionListener() {
             @Override
@@ -128,54 +131,73 @@ public class CommandMenu {
 
                 String stId = stIdField.getText();
                 String coId = coIdField.getText();
-                Course c = Main.courses.get(coId);
-                Student s = Main.students.get(stId);
-                if (c == null || s == null) {
-                    JOptionPane.showMessageDialog(null, "An error occurred!", "Error", JOptionPane.ERROR_MESSAGE);
+                Course courseToEnroll = Main.courses.get(coId);
+                Student student = Main.students.get(stId);
+                if (courseToEnroll == null || student == null) {
+                    JOptionPane.showMessageDialog(null, "Both course and student were not found!", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
 
 //                    if student is already enrolled don't add course and don't update earned money
-                    if(!s.getCourse().contains(c)) {
-                        s.setCourse(c);
-                        c.setMoney_earned(c.getMoney_earned() + c.getPrice());
+                    if(!student.getCourse().contains(courseToEnroll)) {
+                        student.setCourse(courseToEnroll);
+                        courseToEnroll.setMoney_earned(courseToEnroll.getMoney_earned() + courseToEnroll.getPrice());
                     }
 
-                    JOptionPane.showMessageDialog(null, "Student enrolled!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    frame.setVisible(true);
-                    frame2.setVisible(false);
-                    frame2.remove(stLabel);
-                    frame2.remove(stIdField);
+                    JOptionPane.showMessageDialog(null, "Student enrolled", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    menuFrame.setVisible(true);
+                    executionFrame.setVisible(false);
+                    executionFrame.remove(stLabel);
+                    executionFrame.remove(stIdField);
 //                    *************************
-                    frame2.remove(coLabel);
-                    frame2.remove(coIdField);
-                    frame2.remove(executeBtn);
+                    executionFrame.remove(coLabel);
+                    executionFrame.remove(coIdField);
+                    executionFrame.remove(executeBtn);
+                    executionFrame.remove(goBackButton);
 
                 }
             }
         });
 
-        frame2.add(stLabel);
-        frame2.add(stIdField);
+        // Create a "Go Back" button
+        goBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                executionFrame.dispose();
+                menuFrame.setVisible(true);
+
+                executionFrame.remove(stLabel);
+                executionFrame.remove(stIdField);
 //                    *************************
-        frame2.add(coLabel);
-        frame2.add(coIdField);
-        frame2.add(executeBtn);
-        frame2.setVisible(true);
+                executionFrame.remove(coLabel);
+                executionFrame.remove(coIdField);
+                executionFrame.remove(executeBtn);
+                executionFrame.remove(goBackButton);
+            }
+        });
+
+        executionFrame.add(stLabel);
+        executionFrame.add(stIdField);
+//                    *************************
+        executionFrame.add(coLabel);
+        executionFrame.add(coIdField);
+        executionFrame.add(executeBtn);
+        executionFrame.add(goBackButton);
+        executionFrame.setVisible(true);
     }
 
     private void assignTeacher() {
 
-        frame.setVisible(false);
+        menuFrame.setVisible(false);
 
-        JLabel teacherLabel = new JLabel("Enter teacher id: ");
+        JLabel teacherLabel = new JLabel("Enter Teacher Id: ");
         JTextField teacherIdField = new JTextField(30);
         teacherIdField.setPreferredSize(new Dimension(150, 25));
 //                    ************************************************
-        JLabel coLabel = new JLabel("Enter course id: ");
+        JLabel coLabel = new JLabel("Enter Course Id: ");
         JTextField coIdField = new JTextField(30);
         coIdField.setPreferredSize(new Dimension(150, 25));
 
-        executeBtn= new JButton("ASSIGN teacher");
+        executeBtn= new JButton("Assign Teacher");
 
         executeBtn.addActionListener(new ActionListener() {
             @Override
@@ -183,39 +205,58 @@ public class CommandMenu {
 
                 String teacherId = teacherIdField.getText();
                 String coId = coIdField.getText();
-                Course c = Main.courses.get(coId);
-                Teacher t = Main.teachers.get(teacherId);
-                if (c == null || t == null) {
-                    JOptionPane.showMessageDialog(null, "An error occurred!", "Error", JOptionPane.ERROR_MESSAGE);
+                Course courseToAssign = Main.courses.get(coId);
+                Teacher teacher = Main.teachers.get(teacherId);
+                if (courseToAssign == null || teacher == null) {
+                    JOptionPane.showMessageDialog(null, "Both course and student were not found!", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
 
-                    c.setTeacher(t);
-                    JOptionPane.showMessageDialog(null, "teacher assigned !", "Success", JOptionPane.INFORMATION_MESSAGE);
-                    frame.setVisible(true);
-                    frame2.setVisible(false);
-                    frame2.remove(teacherLabel);
-                    frame2.remove(teacherIdField);
+                    courseToAssign.setTeacher(teacher);
+                    JOptionPane.showMessageDialog(null, "Teacher Assigned", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    menuFrame.setVisible(true);
+                    executionFrame.setVisible(false);
+                    executionFrame.remove(teacherLabel);
+                    executionFrame.remove(teacherIdField);
 //                    *************************
-                    frame2.remove(coLabel);
-                    frame2.remove(coIdField);
-                    frame2.remove(executeBtn);
+                    executionFrame.remove(coLabel);
+                    executionFrame.remove(coIdField);
+                    executionFrame.remove(executeBtn);
 
                 }
             }
         });
 
 
-        frame2.add(teacherLabel);
-        frame2.add(teacherIdField);
+        // Create a "Go Back" button
+        goBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                executionFrame.dispose();
+                menuFrame.setVisible(true);
+
+                executionFrame.remove(teacherLabel);
+                executionFrame.remove(teacherIdField);
 //                    *************************
-        frame2.add(coLabel);
-        frame2.add(coIdField);
-        frame2.add(executeBtn);
-        frame2.setVisible(true);
+                executionFrame.remove(coLabel);
+                executionFrame.remove(coIdField);
+                executionFrame.remove(executeBtn);
+                executionFrame.remove(goBackButton);
+            }
+        });
+
+
+        executionFrame.add(teacherLabel);
+        executionFrame.add(teacherIdField);
+//                    *************************
+        executionFrame.add(coLabel);
+        executionFrame.add(coIdField);
+        executionFrame.add(executeBtn);
+        executionFrame.add(goBackButton);
+        executionFrame.setVisible(true);
     }
 
     private void showCourses() {
-        frame.setVisible(false);
+        menuFrame.setVisible(false);
         JTextArea coursesTextArea = new JTextArea(15, 40);
         coursesTextArea.setEditable(false);
         StringBuilder coursesText = new StringBuilder();
@@ -236,37 +277,37 @@ public class CommandMenu {
         goBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame2.dispose();
-                frame.setVisible(true);
-                frame2.remove(scrollPane);
-                frame2.remove(goBackButton);
+                executionFrame.dispose();
+                menuFrame.setVisible(true);
+                executionFrame.remove(scrollPane);
+                executionFrame.remove(goBackButton);
 
             }
         });
 
-        frame2.add(scrollPane, BorderLayout.CENTER);
-        frame2.add(goBackButton, BorderLayout.SOUTH);
+        executionFrame.add(scrollPane, BorderLayout.CENTER);
+        executionFrame.add(goBackButton, BorderLayout.SOUTH);
 
-        frame2.setVisible(true);
+        executionFrame.setVisible(true);
 
     }
     private void lookupCourse() {
 
-        frame.setVisible(false);
+        menuFrame.setVisible(false);
 
-        JLabel coLabel = new JLabel("Enter course id: ");
+        JLabel coLabel = new JLabel("Enter Course Id: ");
         JTextField coIdField = new JTextField(30);
         coIdField.setPreferredSize(new Dimension(150, 25));
 
-        executeBtn= new JButton("LOOKUP FOR COURSE");
+        executeBtn= new JButton("Lookup");
 
         executeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("63***" + Main.students);
                 String coId = coIdField.getText();
-                Course c = Main.courses.get(coId);
-                if (c == null) {
+                Course course = Main.courses.get(coId);
+                if (course == null) {
                     JOptionPane.showMessageDialog(null, "There's no course with entered ID!", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
 
@@ -274,37 +315,52 @@ public class CommandMenu {
                     JPanel coursePanel = new JPanel(new GridLayout(4, 2));
 
                     coursePanel.add(new JLabel("ID:"));
-                    coursePanel.add(new JLabel(c.getCourseId()));
+                    coursePanel.add(new JLabel(course.getCourseId()));
 
                     coursePanel.add(new JLabel("Name: "));
-                    coursePanel.add(new JLabel(c.getName()));
+                    coursePanel.add(new JLabel(course.getName()));
 
                     coursePanel.add(new JLabel("Price: "));
-                    coursePanel.add(new JLabel(String.valueOf(c.getPrice())));
+                    coursePanel.add(new JLabel(String.valueOf(course.getPrice())));
 
                     coursePanel.add(new JLabel("Teacher: "));
-                    coursePanel.add(new JLabel(c.getTeacher() == null ? "Not assiagned" : c.getTeacher().getName()));
+                    coursePanel.add(new JLabel(course.getTeacher() == null ? "Not assiagned" : course.getTeacher().getName()));
 
                     // Display the panel in a message dialog
                     JOptionPane.showMessageDialog(null, coursePanel, "Course Information", JOptionPane.INFORMATION_MESSAGE);
 
-                    frame.setVisible(true);
-                    frame2.setVisible(false);
-                    frame2.remove(coLabel);
-                    frame2.remove(coIdField);
-                    frame2.remove(executeBtn);
+                    menuFrame.setVisible(true);
+                    executionFrame.setVisible(false);
+                    executionFrame.remove(coLabel);
+                    executionFrame.remove(coIdField);
+                    executionFrame.remove(executeBtn);
                 }
             }
         });
 
-        frame2.add(coLabel);
-        frame2.add(coIdField);
-        frame2.add(executeBtn);
 
-        frame2.setVisible(true);
+        // Create a "Go Back" button
+        goBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                executionFrame.dispose();
+                menuFrame.setVisible(true);
+
+                executionFrame.remove(coLabel);
+                executionFrame.remove(coIdField);
+                executionFrame.remove(executeBtn);
+                executionFrame.remove(goBackButton);
+            }
+        });
+
+        executionFrame.add(coLabel);
+        executionFrame.add(coIdField);
+        executionFrame.add(executeBtn);
+        executionFrame.add(goBackButton);
+        executionFrame.setVisible(true);
     }
     private void showStudents() {
-        frame.setVisible(false);
+        menuFrame.setVisible(false);
 
         JTextArea studentsTextArea = new JTextArea(15, 40);
         studentsTextArea.setEditable(false);
@@ -330,28 +386,28 @@ public class CommandMenu {
         goBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame.setVisible(true);
-                frame2.dispose();
-                frame2.remove(scrollPane1);
-                frame2.remove(goBackButton);
+                menuFrame.setVisible(true);
+                executionFrame.dispose();
+                executionFrame.remove(scrollPane1);
+                executionFrame.remove(goBackButton);
             }
         });
 
-        frame2.add(scrollPane1, BorderLayout.CENTER);
-        frame2.add(goBackButton, BorderLayout.SOUTH);
+        executionFrame.add(scrollPane1, BorderLayout.CENTER);
+        executionFrame.add(goBackButton, BorderLayout.SOUTH);
 
-        frame2.setVisible(true);
+        executionFrame.setVisible(true);
     }
 
     private void lookupStudent() {
 
-        frame.setVisible(false);
+        menuFrame.setVisible(false);
 
-        JLabel studentLabel = new JLabel("Enter student id: ");
+        JLabel studentLabel = new JLabel("Enter Student Id: ");
         JTextField studentIdField = new JTextField(30);
         studentIdField.setPreferredSize(new Dimension(150, 25));
 
-        executeBtn = new JButton("LOOKUP FOR STUDENT");
+        executeBtn = new JButton("Lookup");
 
         executeBtn.addActionListener(new ActionListener() {
             @Override
@@ -359,47 +415,61 @@ public class CommandMenu {
                 System.out.println("63***" + Main.students);
 //                            String teacherId= teacherIdField.getText();
                 String studentId = studentIdField.getText();
-                Student s = Main.students.get(studentId);
+                Student student = Main.students.get(studentId);
 //                            Teacher t = Main.teachers.get(teacherId);
-                if (s == null) {
+                if (student == null) {
                     JOptionPane.showMessageDialog(null, "There's no student with entered ID!", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
 
                     JPanel coursePanel = new JPanel(new GridLayout(4, 2));
 
                     coursePanel.add(new JLabel("ID:"));
-                    coursePanel.add(new JLabel(s.getStudentId()));
+                    coursePanel.add(new JLabel(student.getStudentId()));
 
                     coursePanel.add(new JLabel("Name: "));
-                    coursePanel.add(new JLabel(s.getName()));
+                    coursePanel.add(new JLabel(student.getName()));
 
                     coursePanel.add(new JLabel("Email: "));
-                    coursePanel.add(new JLabel(String.valueOf(s.getEmail())));
+                    coursePanel.add(new JLabel(String.valueOf(student.getEmail())));
 
                     coursePanel.add(new JLabel("Adress: "));
-                    coursePanel.add(new JLabel(s.getAddress()));
+                    coursePanel.add(new JLabel(student.getAddress()));
 
                     // Display the panel in a message dialog
                     JOptionPane.showMessageDialog(null, coursePanel, "Student Information", JOptionPane.INFORMATION_MESSAGE);
 
-                    frame.setVisible(true);
-                    frame2.setVisible(false);
-                    frame2.remove(studentLabel);
-                    frame2.remove(studentIdField);
-                    frame2.remove(executeBtn);
+                    menuFrame.setVisible(true);
+                    executionFrame.setVisible(false);
+                    executionFrame.remove(studentLabel);
+                    executionFrame.remove(studentIdField);
+                    executionFrame.remove(executeBtn);
 
                 }
             }
         });
 
-        frame2.add(studentLabel);
-        frame2.add(studentIdField);
-        frame2.add(executeBtn);
-//                    System.out.println("id: "+id);
-        frame2.setVisible(true);
+
+        // Create a "Go Back" button
+        goBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                executionFrame.dispose();
+                menuFrame.setVisible(true);
+
+                executionFrame.remove(studentLabel);
+                executionFrame.remove(studentIdField);
+                executionFrame.remove(executeBtn);
+                executionFrame.remove(goBackButton);
+            }
+        });
+        executionFrame.add(studentLabel);
+        executionFrame.add(studentIdField);
+        executionFrame.add(executeBtn);
+        executionFrame.add(goBackButton);
+        executionFrame.setVisible(true);
     }
     private void showTeachers() {
-        frame.setVisible(false);
+        menuFrame.setVisible(false);
 
         JTextArea teachersTextArea = new JTextArea(15, 40);
         teachersTextArea.setEditable(false);
@@ -420,74 +490,88 @@ public class CommandMenu {
         goBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame2.dispose();
-                frame.setVisible(true);
-                frame2.remove(scrollPane2);
-                frame2.remove(goBackButton);
+                executionFrame.dispose();
+                menuFrame.setVisible(true);
+                executionFrame.remove(scrollPane2);
+                executionFrame.remove(goBackButton);
             }
         });
 
-        frame2.add(scrollPane2, BorderLayout.CENTER);
-        frame2.add(goBackButton, BorderLayout.SOUTH);
+        executionFrame.add(scrollPane2, BorderLayout.CENTER);
+        executionFrame.add(goBackButton, BorderLayout.SOUTH);
 
-        frame2.setVisible(true);
+        executionFrame.setVisible(true);
 
     }
     private void lookupTeacher() {
         // The logic to handle "LOOKUP TEACHER"
-        System.out.println("LOOKUP TEACHER");
+        System.out.println("LOOKUP");
 
 
-        frame.setVisible(false);
+        menuFrame.setVisible(false);
 
-        JLabel teacherLabel = new JLabel("Enter teacher id: ");
+        JLabel teacherLabel = new JLabel("Enter Teacher Id: ");
         JTextField teacherIdField = new JTextField(30);
         teacherIdField.setPreferredSize(new Dimension(150, 25));
 
 
-        executeBtn= new JButton("LOOKUP FOR TEACHER");
+        executeBtn= new JButton("Lookup");
 
         executeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("63***" + Main.students);
                 String teacherId = teacherIdField.getText();
-                Teacher t = Main.teachers.get(teacherId);
-                if (t == null) {
+                Teacher teacher = Main.teachers.get(teacherId);
+                if (teacher == null) {
                     JOptionPane.showMessageDialog(null, "There's no teacher with entered ID!", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
 
                     JPanel coursePanel = new JPanel(new GridLayout(3, 2));
 
                     coursePanel.add(new JLabel("ID:"));
-                    coursePanel.add(new JLabel(t.getTeacherId()));
+                    coursePanel.add(new JLabel(teacher.getTeacherId()));
 
                     coursePanel.add(new JLabel("Name: "));
-                    coursePanel.add(new JLabel(t.getName()));
+                    coursePanel.add(new JLabel(teacher.getName()));
 
                     coursePanel.add(new JLabel("Salary: "));
-                    coursePanel.add(new JLabel(String.valueOf(t.getSalary())));
+                    coursePanel.add(new JLabel(String.valueOf(teacher.getSalary())));
 
 
                     // Display the panel in a message dialog
                     JOptionPane.showMessageDialog(null, coursePanel, "Teacher Information", JOptionPane.INFORMATION_MESSAGE);
 
-                    frame.setVisible(true);
-                    frame2.setVisible(false);
-                    frame2.remove(teacherLabel);
-                    frame2.remove(teacherIdField);
-                    frame2.remove(executeBtn);
+                    menuFrame.setVisible(true);
+                    executionFrame.setVisible(false);
+                    executionFrame.remove(teacherLabel);
+                    executionFrame.remove(teacherIdField);
+                    executionFrame.remove(executeBtn);
 
                 }
             }
         });
 
+        // Create a "Go Back" button
+        goBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                executionFrame.dispose();
+                menuFrame.setVisible(true);
 
-        frame2.add(teacherLabel);
-        frame2.add(teacherIdField);
-        frame2.add(executeBtn);
+                executionFrame.remove(teacherLabel);
+                executionFrame.remove(teacherIdField);
 
-        frame2.setVisible(true);
+                executionFrame.remove(executeBtn);
+                executionFrame.remove(goBackButton);
+            }
+        });
+
+        executionFrame.add(teacherLabel);
+        executionFrame.add(teacherIdField);
+        executionFrame.add(executeBtn);
+        executionFrame.add(goBackButton);
+        executionFrame.setVisible(true);
 
     }
 
@@ -496,93 +580,113 @@ public class CommandMenu {
         Main.profit();
         double profit = Main.profit;
 
-        frame.setVisible(false);
+        menuFrame.setVisible(false);
 
         JLabel profitLabel = new JLabel("Profit: ");
+        JLabel showProfitLabel = new JLabel(String.valueOf(profit)+" $");
 
-        JLabel showProfitLabel = new JLabel(String.valueOf(profit));
+        // Create a panel for labels and add both labels to it
+        JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        labelPanel.add(profitLabel);
+        labelPanel.add(showProfitLabel);
+
+
+        // Create a main panel and set its layout
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
         goBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame2.dispose();
-                frame.setVisible(true);
-                frame2.remove(profitLabel);
-                frame2.remove(showProfitLabel);
-                frame2.remove(goBackButton);
+                executionFrame.dispose();
+                menuFrame.setVisible(true);
+                executionFrame.remove(mainPanel);
             }
         });
 
 
+        // Add labelPanel and goBackButton to the mainPanel
+        mainPanel.add(labelPanel);
+        mainPanel.add(goBackButton);
 
-        frame2.add(profitLabel);
-        frame2.add(showProfitLabel);
-        frame2.add(goBackButton);
-
-        frame2.setVisible(true);
-
+        // Add the mainPanel to the frame
+        executionFrame.add(mainPanel);
+        executionFrame.setVisible(true);
     }
+
     private void showMoneyEarned() {
 
         Main.profit();
         double totalMoneyEarned = Main.totalMoneyEarned;
 
-        frame.setVisible(false);
+        menuFrame.setVisible(false);
 
         JLabel totalMoneyEarnedLabel = new JLabel("Money Earned: ");
+        JLabel showTotalMoneyEarnedLabel = new JLabel(String.valueOf(totalMoneyEarned)+" $");
 
-        JLabel showTotalMoneyEarnedLabel = new JLabel(String.valueOf(totalMoneyEarned));
+        // Create a panel for labels and add both labels to it
+        JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        labelPanel.add(totalMoneyEarnedLabel);
+        labelPanel.add(showTotalMoneyEarnedLabel);
 
+        // Create a main panel and set its layout
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         goBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame2.dispose();
-                frame.setVisible(true);
-                frame2.remove(totalMoneyEarnedLabel);
-                frame2.remove(showTotalMoneyEarnedLabel);
-                frame2.remove(goBackButton);
+                executionFrame.dispose();
+                menuFrame.setVisible(true);
+                executionFrame.remove(mainPanel);
             }
         });
 
 
+        // Add labelPanel and goBackButton to the mainPanel
+        mainPanel.add(labelPanel);
+        mainPanel.add(goBackButton);
 
-        frame2.add(totalMoneyEarnedLabel);
-        frame2.add(showTotalMoneyEarnedLabel);
-        frame2.add(goBackButton);
-
-        frame2.setVisible(true);
-
+        // Add the mainPanel to the frame
+        executionFrame.add(mainPanel);
+        executionFrame.setVisible(true);
     }
+
     private void showMoneySpent() {
 
         Main.profit();
         double totalMoneySpent = Main.totalTeacherSalaries;
 
-        frame.setVisible(false);
+        menuFrame.setVisible(false);
 
         JLabel totalMoneySpentLabel = new JLabel("Money Spent: ");
+        JLabel showTotalMoneySpentLabel = new JLabel(String.valueOf(totalMoneySpent)+" $");
 
-        JLabel showTotalMoneySpentLabel = new JLabel(String.valueOf(totalMoneySpent));
+        // Create a panel for labels and add both labels to it
+        JPanel labelPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        labelPanel.add(totalMoneySpentLabel);
+        labelPanel.add(showTotalMoneySpentLabel);
 
+        // Create a main panel and set its layout
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         goBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                frame2.dispose();
-                frame.setVisible(true);
-                frame2.remove(totalMoneySpentLabel);
-                frame2.remove(showTotalMoneySpentLabel);
-                frame2.remove(goBackButton);
+                executionFrame.dispose();
+                menuFrame.setVisible(true);
+                executionFrame.remove(mainPanel);
             }
         });
 
 
 
-        frame2.add(totalMoneySpentLabel);
-        frame2.add(showTotalMoneySpentLabel);
-        frame2.add(goBackButton);
+        // Add labelPanel and goBackButton to the mainPanel
+        mainPanel.add(labelPanel);
+        mainPanel.add(goBackButton);
 
-        frame2.setVisible(true);
-
+        // Add the mainPanel to the frame
+        executionFrame.add(mainPanel);
+        executionFrame.setVisible(true);
     }
 
 }
