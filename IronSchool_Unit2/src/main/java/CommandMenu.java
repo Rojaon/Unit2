@@ -29,6 +29,7 @@ public class CommandMenu {
         // Set the new frame location
         menuFrame.setLocation(x, y);
 
+//        Add commands to list as menu
         listModel = new DefaultListModel<>();
         listModel.addElement("ENROLL STUDENT TO COURSE");
         listModel.addElement("ASSIGN TEACHER TO COURSE");
@@ -45,7 +46,7 @@ public class CommandMenu {
 
         menuList = new JList<>(listModel);
         menuList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        menuList.setSelectedIndex(0);
+        menuList.setSelectedIndex(0);  //Select first command
 
         selectBtn = new JButton("Select");
 
@@ -55,9 +56,9 @@ public class CommandMenu {
 
         executionFrame = new JFrame(Main.schoolName);
         executionFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        executionFrame.setLocation(x, y);
+        executionFrame.setLocation(x, y);  //set frames in the center of screen
 
-        executionFrame.setSize(500, 400);
+        executionFrame.setSize(500, 400); //set frame size
         executionFrame.setLayout(new FlowLayout());
         goBackButton = new JButton("Go Back");
 
@@ -65,13 +66,11 @@ public class CommandMenu {
         selectBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String selectedOption = menuList.getSelectedValue();
+                String selectedOption = menuList.getSelectedValue(); //get user choice
 
                 switch (selectedOption) {
                     case "ENROLL STUDENT TO COURSE":
-
                             enrollStudent();
-
                         break;
                     case "ASSIGN TEACHER TO COURSE":
                         assignTeacher();
@@ -114,23 +113,23 @@ public class CommandMenu {
         });
     }
 
-    //      ================================================= REFACTOR CODE   =================================================
+    //      ================================================= FUNCTIONS   =================================================
 
     private void enrollStudent() {
 
-        System.out.println(Main.students);
         menuFrame.setVisible(false);
 
+//        Student field
         JLabel stLabel = new JLabel("Enter Student Id: ");
         JTextField stIdField = new JTextField(30);
         stIdField.setPreferredSize(new Dimension(150, 25));
-//                    ************************************************
+
+//        Course field
         JLabel coLabel = new JLabel("Enter Course Id: ");
         JTextField coIdField = new JTextField(30);
         coIdField.setPreferredSize(new Dimension(150, 25));
 
         executeBtn= new JButton("Enroll Student");
-
 
         executeBtn.addActionListener(new ActionListener() {
             @Override
@@ -140,6 +139,8 @@ public class CommandMenu {
                 String coId = coIdField.getText();
                 Course courseToEnroll = Main.courses.get(coId);
                 Student student = Main.students.get(stId);
+
+//                if student or course doesn't exist pop up an error message
                 if (courseToEnroll == null || student == null) {
                     JOptionPane.showMessageDialog(null, "Both course and student were not found!", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
@@ -151,6 +152,7 @@ public class CommandMenu {
                     }
 
                     JOptionPane.showMessageDialog(null, "Student enrolled", "Success", JOptionPane.INFORMATION_MESSAGE);
+//                    Remove all components from executionFrame and return to menuFrame
                     menuFrame.setVisible(true);
                     executionFrame.setVisible(false);
                     executionFrame.remove(stLabel);
@@ -169,12 +171,13 @@ public class CommandMenu {
         goBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+ //         Remove all components from executionFrame and return to menuFrame
+
                 executionFrame.dispose();
                 menuFrame.setVisible(true);
-
                 executionFrame.remove(stLabel);
                 executionFrame.remove(stIdField);
-//                    *************************
+
                 executionFrame.remove(coLabel);
                 executionFrame.remove(coIdField);
                 executionFrame.remove(executeBtn);
@@ -182,9 +185,11 @@ public class CommandMenu {
             }
         });
 
+//      add all components into executionFrame
+
         executionFrame.add(stLabel);
         executionFrame.add(stIdField);
-//                    *************************
+
         executionFrame.add(coLabel);
         executionFrame.add(coIdField);
         executionFrame.add(executeBtn);
@@ -196,10 +201,12 @@ public class CommandMenu {
 
         menuFrame.setVisible(false);
 
+//        Teacher label and field
         JLabel teacherLabel = new JLabel("Enter Teacher Id: ");
         JTextField teacherIdField = new JTextField(30);
         teacherIdField.setPreferredSize(new Dimension(150, 25));
-//                    ************************************************
+
+//        Course label and Field
         JLabel coLabel = new JLabel("Enter Course Id: ");
         JTextField coIdField = new JTextField(30);
         coIdField.setPreferredSize(new Dimension(150, 25));
@@ -214,6 +221,8 @@ public class CommandMenu {
                 String coId = coIdField.getText();
                 Course courseToAssign = Main.courses.get(coId);
                 Teacher teacher = Main.teachers.get(teacherId);
+
+  //            if student or course doesn't exist Display an error message
                 if (courseToAssign == null || teacher == null) {
                     JOptionPane.showMessageDialog(null, "Both course and student were not found!", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
@@ -263,6 +272,8 @@ public class CommandMenu {
     }
 
     private void showCourses() {
+
+//        Frame to show courses details
         menuFrame.setVisible(false);
         JTextArea coursesTextArea = new JTextArea(15, 40);
         coursesTextArea.setEditable(false);
@@ -280,10 +291,11 @@ public class CommandMenu {
         JScrollPane scrollPane = new JScrollPane(coursesTextArea);
 
         // Create a "Go back" button
-
         goBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+   //          Remove all components from executionFrame and return to menuFrame
+
                 executionFrame.dispose();
                 menuFrame.setVisible(true);
                 executionFrame.remove(scrollPane);
@@ -301,7 +313,7 @@ public class CommandMenu {
     private void lookupCourse() {
 
         menuFrame.setVisible(false);
-
+// course label and field
         JLabel coLabel = new JLabel("Enter Course Id: ");
         JTextField coIdField = new JTextField(30);
         coIdField.setPreferredSize(new Dimension(150, 25));
@@ -311,13 +323,13 @@ public class CommandMenu {
         executeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("63***" + Main.students);
+
                 String coId = coIdField.getText();
                 Course course = Main.courses.get(coId);
+//                Display error message if course doesn't exist
                 if (course == null) {
                     JOptionPane.showMessageDialog(null, "There's no course with entered ID!", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-
 
                     JPanel coursePanel = new JPanel(new GridLayout(4, 2));
 
@@ -335,6 +347,8 @@ public class CommandMenu {
 
                     // Display the panel in a message dialog
                     JOptionPane.showMessageDialog(null, coursePanel, "Course Information", JOptionPane.INFORMATION_MESSAGE);
+
+//                    Remove all components from executionFrame and return to menuFrame
 
                     menuFrame.setVisible(true);
                     executionFrame.setVisible(false);
@@ -419,11 +433,10 @@ public class CommandMenu {
         executeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("63***" + Main.students);
-//                            String teacherId= teacherIdField.getText();
+
                 String studentId = studentIdField.getText();
                 Student student = Main.students.get(studentId);
-//                            Teacher t = Main.teachers.get(teacherId);
+//                Display error message if course doesn't exist
                 if (student == null) {
                     JOptionPane.showMessageDialog(null, "There's no student with entered ID!", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
@@ -445,6 +458,8 @@ public class CommandMenu {
                     // Display the panel in a message dialog
                     JOptionPane.showMessageDialog(null, coursePanel, "Student Information", JOptionPane.INFORMATION_MESSAGE);
 
+//               Remove all components from executionFrame and return to menuFrame
+
                     menuFrame.setVisible(true);
                     executionFrame.setVisible(false);
                     executionFrame.remove(studentLabel);
@@ -463,6 +478,7 @@ public class CommandMenu {
                 executionFrame.dispose();
                 menuFrame.setVisible(true);
 
+                //     Remove all components from executionFrame and return to menuFrame
                 executionFrame.remove(studentLabel);
                 executionFrame.remove(studentIdField);
                 executionFrame.remove(executeBtn);
@@ -476,7 +492,9 @@ public class CommandMenu {
         executionFrame.setVisible(true);
     }
     private void showTeachers() {
+
         menuFrame.setVisible(false);
+//         Show teacher info
 
         JTextArea teachersTextArea = new JTextArea(15, 40);
         teachersTextArea.setEditable(false);
@@ -497,6 +515,8 @@ public class CommandMenu {
         goBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+       //         Remove all components from executionFrame and return to menuFrame
                 executionFrame.dispose();
                 menuFrame.setVisible(true);
                 executionFrame.remove(scrollPane2);
@@ -511,10 +531,7 @@ public class CommandMenu {
 
     }
     private void lookupTeacher() {
-        // The logic to handle "LOOKUP TEACHER"
-        System.out.println("LOOKUP");
-
-
+     // Search for a specific teacher info
         menuFrame.setVisible(false);
 
         JLabel teacherLabel = new JLabel("Enter Teacher Id: ");
@@ -527,10 +544,12 @@ public class CommandMenu {
         executeBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("63***" + Main.students);
                 String teacherId = teacherIdField.getText();
                 Teacher teacher = Main.teachers.get(teacherId);
                 if (teacher == null) {
+
+                    // Error pop up of the user didn't enter the ID or enter wrong id
+
                     JOptionPane.showMessageDialog(null, "There's no teacher with entered ID!", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
 
@@ -546,9 +565,11 @@ public class CommandMenu {
                     coursePanel.add(new JLabel(String.valueOf(teacher.getSalary())));
 
 
-                    // Display the panel in a message dialog
+                    // Show teacher info depend on the id the user enter
                     JOptionPane.showMessageDialog(null, coursePanel, "Teacher Information", JOptionPane.INFORMATION_MESSAGE);
 
+
+//     Remove all components from executionFrame and return to menuFrame
                     menuFrame.setVisible(true);
                     executionFrame.setVisible(false);
                     executionFrame.remove(teacherLabel);
@@ -586,6 +607,7 @@ public class CommandMenu {
 
         menuFrame.setVisible(false);
 
+//        Course label and field
         JLabel coLabel = new JLabel("Enter Course Id: ");
         JTextField coIdField = new JTextField(30);
         coIdField.setPreferredSize(new Dimension(150, 25));
@@ -593,25 +615,25 @@ public class CommandMenu {
         JTextArea studentsTextArea = new JTextArea(15, 40);
         studentsTextArea.setEditable(false);
 
-        JScrollPane scrollPane = new JScrollPane(studentsTextArea); // Create it here, so you don't have to recreate it
+        JScrollPane scrollPane = new JScrollPane(studentsTextArea);
 
-// Rest of your initializations ...
         executeBtn= new JButton("Show Students");
 
         executeBtn.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                ArrayList<String> studentsInCourse = new ArrayList<>();
+                ArrayList<String> studentsInCourse = new ArrayList<>(); //to store students name
                 String coId = coIdField.getText();
                 Course course = Main.courses.get(coId);
-
+//              show error message if course doesn't exit
                 if (course == null) {
                     JOptionPane.showMessageDialog(null, "There's no course with entered ID!", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
                     StringBuilder studentsText = new StringBuilder();  // Initialize the StringBuilder here
 
                     for (Student student: Main.students.values()) {
+//                        check if student is enrolled to the course
                         if (student.getCourse().contains(course)) {
                             studentsInCourse.add(student.getName());
                         }
@@ -626,11 +648,12 @@ public class CommandMenu {
             }
         });
 
-// Rest of your code ...
-
         goBackButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+    //          Remove all components from executionFrame and return to menuFrame
+
                 executionFrame.dispose();
                 menuFrame.setVisible(true);
                 executionFrame.remove(coLabel);
@@ -642,7 +665,7 @@ public class CommandMenu {
             }
         });
 
-//        executionFrame.setLayout(new FlowLayout());  // Change to FlowLayout
+
         executionFrame.add(coLabel);
         executionFrame.add(coIdField);
         executionFrame.add(executeBtn);

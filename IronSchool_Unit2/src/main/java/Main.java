@@ -51,7 +51,6 @@ public class Main {
                 if (scanner.hasNextInt()) {
                     input = scanner.nextInt();
                     createObjects(input,switcher);
-                    System.out.println("done with: "+switcher);
                     switcher++;
                     break;
                 } else {
@@ -152,10 +151,10 @@ public class Main {
             totalTeacherSalaries += teacher.getSalary();
         }
 
+// Here we show how much the school gain from the courses subtracted by the teachers salaries
 
-        System.out.println("totalMoneyEarned:"+totalMoneyEarned+"|| totalTeacherSalaries: "+totalTeacherSalaries);
         profit = totalMoneyEarned - totalTeacherSalaries;
-        System.out.println("Total Profit: $" + profit);
+
     }
 
 
