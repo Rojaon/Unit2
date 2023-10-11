@@ -5,8 +5,8 @@ This School Management System is an application that allows users to manage teac
 ## Table of Contents
 - [Features](#Features)
    - [Additional_Commands](#Additional_Commands)
-- [Code Structure](#CodeStructure)
-- [How to Use](#HowtoUse)
+- [Code_Structure](#Code_Structure)
+- [How_to_Use](#How_to_Use)
 - [UML](#UML)
 - [Contributors](#Contributors)
 
@@ -45,7 +45,7 @@ The School Management System provides the following features:
 - These additional commands enhance the system's capabilities and provide more detailed information about students, finances, and expenses.
 
 
-## Code Structure:
+## Code_Structure:
 The code is organized into three main classes:
 
 - The *Teacher*, *Course*, and *Student* classes represent the core entities in the school management system. They contain attributes and methods to manage teachers, courses, and students.
