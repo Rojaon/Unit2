@@ -599,9 +599,10 @@ public class CommandMenu {
         executeBtn= new JButton("Show Students");
 
         executeBtn.addActionListener(new ActionListener() {
-            ArrayList<String> studentsInCourse = new ArrayList<>();
+
             @Override
             public void actionPerformed(ActionEvent e) {
+                ArrayList<String> studentsInCourse = new ArrayList<>();
                 String coId = coIdField.getText();
                 Course course = Main.courses.get(coId);
 
