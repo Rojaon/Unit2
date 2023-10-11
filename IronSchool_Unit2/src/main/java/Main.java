@@ -2,6 +2,7 @@
 import javax.swing.*;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Main {
 
@@ -13,6 +14,8 @@ public class Main {
     public static double profit;
     public static double totalMoneyEarned;
     public static double totalTeacherSalaries;
+
+    public static String regexPattern = "^(.+)@(\\S+)$";
 
     public static void main(String[] args) {
 
@@ -29,7 +32,7 @@ public class Main {
         courses.forEach((key, value) -> {
             System.out.println("courses\nKey: " + key + ", Value: " + value);
         });
-  students.forEach((key, value) -> {
+        students.forEach((key, value) -> {
             System.out.println("students\nKey: " + key + ", Value: " + value);
         });
 
@@ -48,9 +51,9 @@ public class Main {
                 System.out.println(question);
                 if (scanner.hasNextInt()) {
                     input = scanner.nextInt();
-                        createObjects(input,switcher);
-                        System.out.println("done with: "+switcher);
-                        switcher++;
+                    createObjects(input,switcher);
+                    System.out.println("done with: "+switcher);
+                    switcher++;
                     break;
                 } else {
                     System.out.println("That's not a valid number. Try again.");
@@ -68,52 +71,80 @@ public class Main {
                 for (int i =0; i<number; i++){
                     System.out.println("Enter teacher name:\n");
                     String name =  scanner.nextLine();
-                    System.out.println("Enter teacher "+name+" salary:\n");
-                    double salary =  scanner.nextDouble();
+                    double salary;
+                    while (true) {
+                        System.out.println("Enter teacher "+name+" salary:\n");
+                        if (scanner.hasNextDouble()) {
+                            salary = scanner.nextDouble();
+                            break;
+                        } else {
+                            System.out.println("That's not a valid number. Try again.");
+                            scanner.next(); // Clear the invalid input
+                        }
+                    }
                     scanner.nextLine();
                     Teacher teacherObj = new Teacher(name,salary);
                     teachers.put(teacherObj.getTeacherId(),teacherObj);
-
-
                 }
                 break;
             case 2:
                 for (int i =0; i<number; i++){
                     System.out.println("Enter course name:\n");
                     String name =  scanner.nextLine();
-                    System.out.println("Enter "+name+" course price:\n");
-                    double price =  scanner.nextDouble();
+                    double price;
+                    while (true) {
+                        System.out.println("Enter "+name+" course price:\n");
+                        if (scanner.hasNextDouble()) {
+                            price = scanner.nextDouble();
+                            break;
+                        } else {
+                            System.out.println("That's not a valid number. Try again.");
+                            scanner.next(); // Clear the invalid input
+                        }
+                    }
                     scanner.nextLine();
                     Course courseObj = new Course(name,price);
                     courses.put(courseObj.getCourseId(),courseObj);
-
-
                 }
                 break;
-
             default:
                 for (int i =0; i<number; i++){
                     System.out.println("Enter student name:\n");
                     String name =  scanner.nextLine();
-                    System.out.println("Enter "+name+" email:\n");
-                    String  email =  scanner.nextLine();
-                    System.out.println("Enter "+name+" adress:\n");
+                    String  email;
+                    while (true) {
+                        System.out.println("Enter "+name+" email:\n");
+                        String test = scanner.nextLine();
+                        if(patternMatches(test,regexPattern)) {
+                            email = test;
+                            break;
+                        }
+                        else {
+                            System.out.println("That's not a valid email. Try again.");
+                        }
+                    }
+                    System.out.println("Enter "+name+" address:\n");
                     String  address =  scanner.nextLine();
                     Student studentObj = new Student(name,address,email);
                     students.put(studentObj.getStudentId(),studentObj);
-
-
                 }
 
         }
 
     }
 
+    // check email
+    public static boolean patternMatches(String emailAddress, String regexPattern) {
+        return Pattern.compile(regexPattern)
+                .matcher(emailAddress)
+                .matches();
+    }
+
     public static void profit(){
         // Show Profit
 
         totalMoneyEarned = 0.0;
-       totalTeacherSalaries = 0.0;
+        totalTeacherSalaries = 0.0;
         for (Course course : courses.values()) {
             totalMoneyEarned += course.getMoney_earned();
         }
@@ -124,7 +155,7 @@ public class Main {
 
 
         System.out.println("totalMoneyEarned:"+totalMoneyEarned+"|| totalTeacherSalaries: "+totalTeacherSalaries);
-         profit = totalMoneyEarned - totalTeacherSalaries;
+        profit = totalMoneyEarned - totalTeacherSalaries;
         System.out.println("Total Profit: $" + profit);
     }
 }
