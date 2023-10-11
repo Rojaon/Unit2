@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -19,8 +18,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        InputData("Enter Number of Teacher: \n",
-                "Enter Number of Courses: \n","Enter Number of Students: \n");
+        InputData("Enter Number of Teacher:",
+                "Enter Number of Courses:","Enter Number of Students:");
 
 //     ========================= Start JFrame   =========================
         SwingUtilities.invokeLater(CommandMenu::new);
@@ -158,4 +157,6 @@ public class Main {
         profit = totalMoneyEarned - totalTeacherSalaries;
         System.out.println("Total Profit: $" + profit);
     }
+
+
 }

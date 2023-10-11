@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Map;
 
 public class CommandMenu {
@@ -37,6 +38,7 @@ public class CommandMenu {
         listModel.addElement("LOOKUP STUDENT");
         listModel.addElement("SHOW TEACHERS");
         listModel.addElement("LOOKUP TEACHER");
+        listModel.addElement("SHOW STUDENTS IN COURSE");
         listModel.addElement("SHOW PROFIT");
         listModel.addElement("SHOW MONEY EARNED");
         listModel.addElement("SHOW MONEY SPENT");
@@ -67,7 +69,9 @@ public class CommandMenu {
 
                 switch (selectedOption) {
                     case "ENROLL STUDENT TO COURSE":
-                        enrollStudent();
+
+                            enrollStudent();
+
                         break;
                     case "ASSIGN TEACHER TO COURSE":
                         assignTeacher();
@@ -90,6 +94,9 @@ public class CommandMenu {
                     case "LOOKUP TEACHER":
                         lookupTeacher();
                         break;
+                    case "SHOW STUDENTS IN COURSE":
+                    showٍStudentsByCourseId();
+                    break;
                     case "SHOW PROFIT":
                     showProfit();
                     break;
@@ -575,6 +582,75 @@ public class CommandMenu {
 
     }
 
+    private void showٍStudentsByCourseId() {
+
+        menuFrame.setVisible(false);
+
+        JLabel coLabel = new JLabel("Enter Course Id: ");
+        JTextField coIdField = new JTextField(30);
+        coIdField.setPreferredSize(new Dimension(150, 25));
+
+        JTextArea studentsTextArea = new JTextArea(15, 40);
+        studentsTextArea.setEditable(false);
+
+        JScrollPane scrollPane = new JScrollPane(studentsTextArea); // Create it here, so you don't have to recreate it
+
+// Rest of your initializations ...
+        executeBtn= new JButton("Show Students");
+
+        executeBtn.addActionListener(new ActionListener() {
+            ArrayList<String> studentsInCourse = new ArrayList<>();
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String coId = coIdField.getText();
+                Course course = Main.courses.get(coId);
+
+                if (course == null) {
+                    JOptionPane.showMessageDialog(null, "There's no course with entered ID!", "Error", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    StringBuilder studentsText = new StringBuilder();  // Initialize the StringBuilder here
+
+                    for (Student student: Main.students.values()) {
+                        if (student.getCourse().contains(course)) {
+                            studentsInCourse.add(student.getName());
+                        }
+                    }
+
+                    for (String name: studentsInCourse) {
+                        studentsText.append("Name: ").append(name).append("\n");
+                    }
+
+                    studentsTextArea.setText(studentsText.toString());
+                }
+            }
+        });
+
+// Rest of your code ...
+
+        goBackButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                executionFrame.dispose();
+                menuFrame.setVisible(true);
+                executionFrame.remove(coLabel);
+                executionFrame.remove(coIdField);
+                executionFrame.remove(executeBtn);
+                executionFrame.remove(scrollPane);  // Add your JScrollPane directly to the frame
+                executionFrame.remove(goBackButton);
+
+            }
+        });
+
+//        executionFrame.setLayout(new FlowLayout());  // Change to FlowLayout
+        executionFrame.add(coLabel);
+        executionFrame.add(coIdField);
+        executionFrame.add(executeBtn);
+        executionFrame.add(scrollPane);  // Add your JScrollPane directly to the frame
+        executionFrame.add(goBackButton);
+        executionFrame.setVisible(true);
+
+
+    }
     private void showProfit() {
 
         Main.profit();
