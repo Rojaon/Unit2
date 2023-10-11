@@ -4,9 +4,9 @@ This School Management System is an application that allows users to manage teac
 
 ## Table of Contents
 - [Features](#Features)
-   - [Additional Commands](#Additional_Commands)
-- [Code Structure](#Code_Structure)
-- [How to Use](#How_to_Use)
+   - [Additional Commands](#AdditionalCommands)
+- [Code Structure](#CodeStructure)
+- [How to Use](#HowtoUse)
 - [UML](#UML)
 - [Contributors](#Contributors)
 
